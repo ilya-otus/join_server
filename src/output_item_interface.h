@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/concept_check.hpp>
 
 template <typename T, typename = void>
 struct is_std_container : std::false_type { };
@@ -33,3 +34,9 @@ protected:
     }
 };
 
+template <typename T>
+struct OutputItemConcept {
+    BOOST_CONCEPT_USAGE(OutputItemConcept) {
+        static_assert(std::is_base_of_v<IOutputItem<T>, T>, "Type is not OutputItem");
+    }
+};

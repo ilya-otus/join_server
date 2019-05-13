@@ -10,6 +10,10 @@ add_library(blk
     handler_fabric.cpp
     lib.cpp
     )
+
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 set_target_properties(blk PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
