@@ -7,34 +7,33 @@
 #include "console_output.h"
 #include "file_output.h"
 
-template<size_t PoolSize = 2, typename Log = ConsoleOutput, typename Pool = FileOutput>
-class OutputHelper : public OutputItemConcept<Log>, public OutputItemConcept<Pool>
+using namespace std::chrono_literals;
+template<size_t PoolSize = 3, typename Log = ConsoleOutput, typename Dump = FileOutput>
+class OutputHelper : public OutputItemConcept<Log>, public OutputItemConcept<Dump>
 {
 public:
-    OutputHelper(bool loggingEnabled = true) : mLoggingEnabled(loggingEnabled) {};
+    OutputHelper()
+        : mLoggingItem(new Log(buf))
+    {
+        for (auto &dump : mDumpPool) {
+            dump.reset(new Dump(buf));
+        }
+    };
+    ~OutputHelper() {
+        while (!buf.empty()) {
+            std::this_thread::sleep_for(500ms);
+        }
+        mLoggingItem->stop();
+        for (auto &dump : mDumpPool) {
+            dump->stop();
+        }
+    }
     void operator<<(const std::vector<std::string> &o) {
-        if (mLoggingEnabled) {
-            mLoggingItem << o;
-        }
-        bool notFound = true;
-        while (notFound) {
-            for (auto &item : mProcessingPool) {
-                if (item.available()) {
-                    item << o;
-                    notFound = false;
-                    break;
-                }
-            }
-        }
-    }
-    void setLoggingEnabled() {
-        mLoggingEnabled = true;
-    }
-    void setLoggingDisabled() {
-        mLoggingEnabled = false;
+        buf.append(o);
     }
 private:
-    std::array<Pool, PoolSize> mProcessingPool;
-    bool mLoggingEnabled;
-    Log mLoggingItem;
+    std::array<std::unique_ptr<AOutputItem>, PoolSize> mDumpPool;
+    OutputBuffer buf;
+    std::unique_ptr<AOutputItem> mLoggingItem;
 };
+

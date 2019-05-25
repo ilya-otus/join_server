@@ -3,7 +3,8 @@
 Handler::Handler(std::shared_ptr<IBulk> bulk)
     : mNext(nullptr),
     mBulk(bulk)
-{ }
+{
+}
 
 void Handler::setNext(std::shared_ptr<Handler> next) {
     mNext = next;

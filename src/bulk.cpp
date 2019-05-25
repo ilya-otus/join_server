@@ -9,7 +9,6 @@ Bulk::Bulk(size_t bulkSize)
     : IBulk(),
     mBulkSize(bulkSize)
 {
-    mOut.setLoggingEnabled();
 }
 
 Bulk::~Bulk() {

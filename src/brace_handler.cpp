@@ -2,7 +2,8 @@
 
 BraceHandler::BraceHandler(std::shared_ptr<IBulk> bulk)
     : Handler(bulk)
-{ }
+{
+}
 
 void BraceHandler::handle(const std::string &cmd) {
     if (cmd == "{") {
