@@ -10,13 +10,22 @@ BulkProxy::BulkProxy(size_t bulkSize = 1)
     mBraceHandler->setNext(mCommandHandler);
 }
 
+BulkProxy::~BulkProxy() {
+    mCommandHandler.reset();
+    mBraceHandler.reset();
+    auto [blocks, cmds] = mBulk->metrics();
+    mBulk.reset();
+    std::cout << "Total processed in Main thread: "
+        << mStrCount << " strings, "
+        << blocks << " blocks and "
+        << cmds << " commands"<< std::endl;
+}
+
 std::istream& operator>>(std::istream &is, BulkProxy &bulkProxy) {
     for (std::string cmd; std::getline(is, cmd); ) {
         bulkProxy.mBraceHandler->handle(cmd);
+        ++bulkProxy.mStrCount;
     }
     return is;
 }
 
-std::shared_ptr<IBulk> BulkProxy::bulk() {
-    return mBulk;
-}

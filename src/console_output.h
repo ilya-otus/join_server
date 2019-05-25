@@ -7,5 +7,5 @@ class ConsoleOutput : public AOutputItem
 {
 public:
     ConsoleOutput(OutputBuffer &buffer);
-    void loop();
+    void loop() override;
 };

@@ -1,12 +1,11 @@
 #include "file_output.h"
 #include <fstream>
 #include <type_traits>
-#include <random>
 
 using namespace std::chrono_literals;
 
 FileOutput::FileOutput(OutputBuffer &buffer)
-    : AOutputItem(buffer)
+    : AOutputItem(buffer, "FileOutput")
 {
 }
 
@@ -27,6 +26,7 @@ void FileOutput::loop() {
                     }
                     dumpFile << std::endl;
                     dumpFile.close();
+                    incMetrics(value.data.size());
                 }
             }
         }

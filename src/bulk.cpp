@@ -12,45 +12,41 @@ Bulk::Bulk(size_t bulkSize)
 }
 
 Bulk::~Bulk() {
-    if (mData.back().size() != mBulkSize && mStatus == 0) {
+    if (mData.back().size() != mBulkSize && mStatus == State::Undefined) {
         mOut << mData.back();
     }
 }
 
 void Bulk::addCommand(const std::string &c) {
-    if ((mData.size() == 0 || mData.back().size() == mBulkSize) && (mStatus & Status::Started) == 0) {
+    ++mCmdCount;
+    if ((mData.size() == 0 || mData.back().size() == mBulkSize) && (mStatus != State::Started)) {
         mData.emplace_back(BulkContainer());
     }
-    if ((mStatus & Status::Finished) != 0) {
+    if (mStatus == State::Finished) {
         mData.emplace_back(BulkContainer());
-        mStatus &= ~Status::Finished;
+        mStatus = State::Undefined;
     }
     mData.back().emplace_back(c);
-    if (mData.back().size() == mBulkSize && (mStatus & Status::Started) == 0) {
+    if (mData.back().size() == mBulkSize && (mStatus != State::Started)) {
         mOut << mData.back();
     }
 }
 
 void Bulk::startOfBlock() {
-    mStatus = mStatus | Status::Started;
-    if (mData.size() !=0 && mData.back().size() != mBulkSize) {
+    mStatus = State::Started;
+    if (mData.size() != 0 && mData.back().size() != mBulkSize) {
         mOut << mData.back();
     }
     mData.emplace_back(BulkContainer());
 }
 
 void Bulk::endOfBlock() {
-    mStatus &= (~Status::Started);
-    mStatus |= Status::Finished;
+    mStatus = State::Finished;
     mOut << mData.back();
 }
 
-void Bulk::dumpAll() {
-    if ((mStatus & Status::Started) != 0) {
-        mData.erase(mData.end() - 1);
-    }
-    for (auto bulk: mData) {
-        mOut << bulk;
-    }
+Metrics Bulk::metrics() const {
+    using namespace std::literals::string_literals;
+    return {mData.size(), mCmdCount};
 }
 

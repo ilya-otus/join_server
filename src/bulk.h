@@ -7,6 +7,11 @@
 #include "bulk_interface.h"
 #include "output_helper.h"
 
+enum class State {
+    Started,
+    Finished,
+    Undefined
+};
 
 using BulkContainer = std::vector<std::string>;
 class Bulk : public IBulk
@@ -17,12 +22,12 @@ public:
     void addCommand(const std::string &cmd);
     void startOfBlock();
     void endOfBlock();
-    void dumpAll();
-
+    Metrics metrics() const override;
 private:
     std::vector<BulkContainer> mData;
-    std::bitset<2> mStatus = 0;
+    State mStatus = State::Undefined;
     size_t mBulkSize;
     OutputHelper<> mOut;
+    size_t mCmdCount = 0;
 };
 

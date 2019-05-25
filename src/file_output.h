@@ -5,5 +5,5 @@ class FileOutput : public AOutputItem
 {
 public:
     FileOutput(OutputBuffer &buffer);
-    void loop();
+    void loop() override;
 };

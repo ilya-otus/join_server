@@ -2,7 +2,7 @@
 
 using namespace std::chrono_literals;
 ConsoleOutput::ConsoleOutput(OutputBuffer &buffer)
-    : AOutputItem(buffer)
+    : AOutputItem(buffer, "ConsoleOutput")
 {
 }
 
@@ -19,8 +19,10 @@ void ConsoleOutput::loop() {
                     std::cout << *item;
                 }
                 std::cout << std::endl;
+                incMetrics(value.size());
             }
         }
         std::this_thread::sleep_for(50ms);
     }
+    std::cout << std::endl;
 }

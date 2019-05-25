@@ -20,14 +20,19 @@ inline constexpr bool is_std_container_v = is_std_container<T>::value;
 class AOutputItem
 {
 public:
-    AOutputItem(OutputBuffer &buffer);
+    AOutputItem(OutputBuffer &buffer, const std::string &name = "OutputItem");
     virtual ~AOutputItem();
     void stop();
     virtual void loop() = 0;
 protected:
+    void incMetrics(size_t cmdCount);
+protected:
     OutputBuffer &mBuffer;
     std::thread mProcessingThread;
     bool mWorking;
+    size_t mCmdCount;
+    size_t mBlockCount;
+    std::string mName;
 };
 
 template <typename T>

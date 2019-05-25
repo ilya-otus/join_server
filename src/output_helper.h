@@ -3,6 +3,7 @@
 #include <array>
 #include <algorithm>
 #include <type_traits>
+#include <stack>
 
 #include "console_output.h"
 #include "file_output.h"
