@@ -16,7 +16,9 @@ void FileOutput::loop() {
                 std::fstream dumpFile;
                 dumpFile.open(value.fileName, std::fstream::out | std::fstream::trunc);
                 if (dumpFile.is_open()) {
+#ifdef DEBUG
                     dumpFile << mProcessingThread.get_id() << " ";
+#endif
                     for (auto item = value.data.cbegin(); item != value.data.cend(); ++item) {
                         if (item != value.data.cbegin()) {
                             dumpFile << ", ";

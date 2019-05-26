@@ -32,9 +32,12 @@ public:
     void operator<<(const std::vector<std::string> &o) {
         buf.append(o);
     }
+    std::shared_ptr<Log> logger() {
+        return mLoggingItem;
+    }
 private:
-    std::array<std::unique_ptr<AOutputItem>, PoolSize> mDumpPool;
+    std::array<std::unique_ptr<Dump>, PoolSize> mDumpPool;
     OutputBuffer buf;
-    std::unique_ptr<AOutputItem> mLoggingItem;
+    std::shared_ptr<Log> mLoggingItem;
 };
 

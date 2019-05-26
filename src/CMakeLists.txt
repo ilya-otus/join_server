@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
+add_compile_definitions($<$<CONFIG:DEBUG>:DEBUG>)
 add_library(blk
     brace_handler.cpp
     bulk.cpp

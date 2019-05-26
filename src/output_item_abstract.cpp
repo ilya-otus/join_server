@@ -11,12 +11,14 @@ AOutputItem::AOutputItem(OutputBuffer &buffer, const std::string &name)
 }
 
 AOutputItem::~AOutputItem() {
-    auto id = mProcessingThread.get_id();
-    mProcessingThread.join();
-    std::cout << "Thead " << mName
-        << " (ID:" << id << "): "
-        << mBlockCount << " blocks, "
-        << mCmdCount << " commands" << std::endl;
+    if (mProcessingThread.joinable()) {
+        auto id = mProcessingThread.get_id();
+        mProcessingThread.join();
+        std::cout << "Thead " << mName
+            << " (ID:" << id << "): "
+            << mBlockCount << " blocks, "
+            << mCmdCount << " commands" << std::endl;
+    }
 }
 
 void AOutputItem::stop() {
