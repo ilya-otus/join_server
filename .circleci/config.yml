@@ -2,7 +2,6 @@ global: &global
     environment:
         MAJOR_VERSION: 0
         MINOR_VERSION: 0
-        BUILD_NUMBER: ${CIRCLE_PREVIOUS_BUILD_NUM}
         PROJECT_NAME: bulkmt
     docker:
         - image: podshivalovilya/cppbuilder:latest
