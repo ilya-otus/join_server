@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE bulk_test_module
-#include "../src/bulk_proxy.h"
+#include "../src/output_helper.h"
 #include <boost/test/unit_test.hpp>
 #include <fstream>
 

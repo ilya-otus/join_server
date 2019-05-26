@@ -18,6 +18,23 @@ auto processedPredicate = [] (const ProcessingUnit &unit) {
 
 } // namespace
 
+ProcessingUnit::ProcessingUnit(const std::vector<std::string> &d)
+    : data(d)
+{
+}
+
+ProcessingUnit::ProcessingUnit(const ProcessingUnit &other)
+    : data(other.data),
+    fileName(other.fileName)
+{
+}
+
+ProcessingUnit& ProcessingUnit::operator=(const ProcessingUnit &other) {
+    data = other.data;
+    fileName = other.fileName;
+    return *this;
+}
+
 void OutputBuffer::append(const std::vector<std::string> &data) {
     std::unique_lock lock(mBufferMutex);
     mBuffer.emplace_back(data);
@@ -33,13 +50,13 @@ std::optional<ProcessingUnit> OutputBuffer::getProcessingData() {
     return {*unit};
 }
 
-std::optional<std::vector<std::string>> OutputBuffer::getOutputData() {
+std::optional<ProcessingUnit> OutputBuffer::getProcessedData() {
     std::unique_lock lock(mBufferMutex);
     auto unit = std::find_if(mBuffer.begin(), mBuffer.end(), processedPredicate);
     if (unit == mBuffer.end()) {
         return {};
     }
-    auto result(unit->data);
+    auto result(*unit);
     mBuffer.erase(unit);
     return result;
 }
@@ -49,7 +66,7 @@ bool OutputBuffer::availableForProcessing() const {
     return std::any_of(mBuffer.begin(), mBuffer.end(), notProcessedPredicate);
 }
 
-bool OutputBuffer::availableForOutput() const {
+bool OutputBuffer::availableProcessedData() const {
     std::shared_lock lock(mBufferMutex);
     return std::any_of(mBuffer.begin(), mBuffer.end(), processedPredicate);
 }

@@ -1,6 +1,6 @@
 *
 !.gitignore
-!.travis.yml
+!*.yml
 !README.md
 !*.cpp
 !*.h
@@ -8,5 +8,6 @@
 !*.hpp
 !/src/
 !/tests/
+!/.circleci/
 !CMakeLists.txt
 version.h

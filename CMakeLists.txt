@@ -12,22 +12,22 @@ if($ENV{TRAVIS_BUILD_NUMBER})
     set(PATCH_VERSION $ENV{TRAVIS_BUILD_NUMBER})
 endif()
 
-project(bulk VERSION ${MAJOR_VERSION}.${MAJOR_VERSION}.${PATCH_VERSION})
+project(bulkmt VERSION ${MAJOR_VERSION}.${MAJOR_VERSION}.${PATCH_VERSION})
 configure_file(version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
-add_executable(bulk main.cpp)
+add_executable(bulkmt main.cpp)
 
-set_target_properties(bulk PROPERTIES
+set_target_properties(bulkmt PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
 
-target_link_libraries(bulk
+target_link_libraries(bulkmt
     blk
 )
-install(TARGETS bulk RUNTIME DESTINATION bin)
+install(TARGETS bulkmt RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")

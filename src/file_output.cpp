@@ -1,6 +1,5 @@
 #include "file_output.h"
 #include <fstream>
-#include <type_traits>
 
 using namespace std::chrono_literals;
 

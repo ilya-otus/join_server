@@ -9,7 +9,7 @@
 #include "file_output.h"
 
 using namespace std::chrono_literals;
-template<size_t PoolSize = 3, typename Log = ConsoleOutput, typename Dump = FileOutput>
+template<size_t PoolSize = 2, typename Log = ConsoleOutput, typename Dump = FileOutput>
 class OutputHelper : public OutputItemConcept<Log>, public OutputItemConcept<Dump>
 {
 public:
