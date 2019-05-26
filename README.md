@@ -1,2 +1,2 @@
-[![Build Status](https://travis-ci.org/ilya-otus/bulkmt.svg?branch=master)](https://travis-ci.org/ilya-otus/bulkmt)
+[![Build Status](https://circleci.com/gh/ilya-otus/bulkmt.svg?style=svg)](https://circleci.com/gh/ilya-otus/bulkmt)
 # Bulkmt
