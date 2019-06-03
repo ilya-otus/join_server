@@ -5,6 +5,7 @@ using namespace std::chrono_literals;
 ConsoleOutput::ConsoleOutput(OutputBuffer &buffer)
     : AOutputItem(buffer, "ConsoleOutput")
 {
+    init();
 }
 
 void ConsoleOutput::loop() {
@@ -12,6 +13,7 @@ void ConsoleOutput::loop() {
         if (mBuffer.availableProcessedData()) {
             if (auto data = mBuffer.getProcessedData()) {
                 auto value = data.value();
+                std::lock_guard lockFileScope(mOutputMutex);
                 std::cout << "bulk: ";
                 for (auto item = value.data.cbegin(); item != value.data.cend(); ++item) {
                     if (item != value.data.cbegin()) {
@@ -25,5 +27,4 @@ void ConsoleOutput::loop() {
         }
         std::this_thread::sleep_for(50ms);
     }
-    std::cout << std::endl;
 }

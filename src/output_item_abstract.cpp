@@ -4,28 +4,31 @@
 
 AOutputItem::AOutputItem(OutputBuffer &buffer, const std::string &name)
     : mBuffer(buffer),
-    mProcessingThread(&AOutputItem::loop, this),
     mWorking(true), mCmdCount(0), mBlockCount(0),
     mName(name)
 {
 }
 
 AOutputItem::~AOutputItem() {
-    if (mProcessingThread.joinable()) {
-        auto id = mProcessingThread.get_id();
-        mProcessingThread.join();
-        std::cout << "Thead " << mName
-            << " (ID:" << id << "): "
-            << mBlockCount << " blocks, "
-            << mCmdCount << " commands" << std::endl;
-    }
+    std::cout << "Thead " << mName
+        << " (ID:" << mProcessingThreadId << "): "
+        << mBlockCount << " blocks, "
+        << mCmdCount << " commands" << std::endl;
 }
 
 void AOutputItem::stop() {
     mWorking = false;
+    mProcessingThreadId = mProcessingThread.get_id();
+    if (mProcessingThread.joinable()) {
+        mProcessingThread.join();
+    }
 }
 
 void AOutputItem::incMetrics(size_t cmdCount) {
     ++mBlockCount;
     mCmdCount += cmdCount;
+}
+
+void AOutputItem::init() {
+    mProcessingThread = std::thread(&AOutputItem::loop, this);
 }

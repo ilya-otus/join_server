@@ -6,6 +6,7 @@ using namespace std::chrono_literals;
 FileOutput::FileOutput(OutputBuffer &buffer)
     : AOutputItem(buffer, "FileOutput")
 {
+    init();
 }
 
 void FileOutput::loop() {

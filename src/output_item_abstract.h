@@ -26,9 +26,11 @@ public:
     virtual void loop() = 0;
 protected:
     void incMetrics(size_t cmdCount);
+    void init();
 protected:
     OutputBuffer &mBuffer;
     std::thread mProcessingThread;
+    std::thread::id mProcessingThreadId;
     bool mWorking;
     size_t mCmdCount;
     size_t mBlockCount;

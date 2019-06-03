@@ -25,4 +25,6 @@ private:
 private:
     mutable std::shared_mutex mBufferMutex;
     std::vector<ProcessingUnit> mBuffer;
+    inline static std::mutex mFileScopeMutex;
+    inline static std::vector<std::string> mFileScope;
 };
