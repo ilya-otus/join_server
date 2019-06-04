@@ -2,7 +2,7 @@ global: &global
     environment:
         MAJOR_VERSION: 0
         MINOR_VERSION: 0
-        PROJECT_NAME: async
+        PROJECT_NAME: libasync
     docker:
         - image: podshivalovilya/cppbuilder:latest
     working_directory: /usr/local/src
