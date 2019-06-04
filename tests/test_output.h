@@ -5,7 +5,10 @@ class TestOutput : public AOutputItem
 {
 public:
     TestOutput(OutputBuffer &buffer)
-        : AOutputItem(buffer, "ConsoleOutput") { }
+        : AOutputItem(buffer, "TestOutput") 
+    {
+        init();
+    }
 
     void loop() override {
         while (mWorking) {

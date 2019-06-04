@@ -9,12 +9,12 @@ set_target_properties(test_version test_multithreading PROPERTIES
 )
 target_link_libraries(test_version
     ${Boost_LIBRARIES}
-    blk
+    async
 )
 
 target_link_libraries(test_multithreading
     ${Boost_LIBRARIES}
-    blk
+    async
 )
 
 set_target_properties(test_version test_multithreading PROPERTIES

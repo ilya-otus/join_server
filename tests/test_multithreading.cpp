@@ -11,11 +11,11 @@ void test(const std::vector<std::vector<std::string>> &testData, const std::vect
     std::string outputFileName;
     std::shared_ptr<TestOutput> testOutput;
     {
-        OutputHelper<PoolSize, TestOutput> out;
+        OutputHelper<PoolSize, TestOutput, FileOutput> out;
+        testOutput = out.logger();
         for (const auto &d : testData) {
             out << d;
         }
-        testOutput = out.logger();
     }
     BOOST_CHECK_EQUAL(testOutput->mProcessedUnits.size(), expectedResult.size());
     for (const auto &unit : testOutput->mProcessedUnits) {
