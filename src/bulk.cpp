@@ -12,7 +12,7 @@ Bulk::Bulk(size_t bulkSize)
 }
 
 Bulk::~Bulk() {
-    if (mData.back().size() != mBulkSize && mStatus == State::Undefined) {
+    if (!mData.empty() && mData.back().size() != mBulkSize && mStatus == State::Undefined) {
         mOut << mData.back();
     }
 }

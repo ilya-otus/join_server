@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 add_compile_definitions($<$<CONFIG:DEBUG>:DEBUG>)
 add_library(async SHARED
     async.cpp
+    async_impl.cpp
     brace_handler.cpp
     bulk.cpp
     bulk_proxy.cpp

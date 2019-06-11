@@ -12,23 +12,30 @@ if($ENV{CIRCLE_BUILD_NUM})
     set(PATCH_VERSION $ENV{CIRCLE_BUILD_NUM})
 endif()
 
-project(libasync VERSION ${MAJOR_VERSION}.${MAJOR_VERSION}.${PATCH_VERSION})
+project(bulk_server VERSION ${MAJOR_VERSION}.${MAJOR_VERSION}.${PATCH_VERSION})
 configure_file(version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
-add_executable(async.out main.cpp)
- 
-set_target_properties(async.out PROPERTIES
+add_executable(bulk_server
+    main.cpp
+    server.cpp
+    session.cpp
+    )
+find_package(Boost REQUIRED system)
+include_directories(${Boost_INCLUDE_DIRS})
+
+set_target_properties(bulk_server PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
  
-target_link_libraries(async.out
+target_link_libraries(bulk_server
     async
 )
 
+install(TARGETS bulk_server RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
