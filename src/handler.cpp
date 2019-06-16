@@ -1,41 +1,15 @@
 #include "handler.h"
+#include <iostream>
 
-Handler::Handler(std::shared_ptr<IBulk> bulk)
-    : mNext(nullptr),
-    mBulk(bulk)
+Handler::Handler(Storage *storage)
+    : mStorage(storage)
 {
 }
 
-void Handler::setNext(std::shared_ptr<Handler> next) {
-    mNext = next;
+void Handler::setArgs(const std::vector<std::string> &cmdArgs) {
+    mArgs = cmdArgs;
 }
 
-void Handler::add(std::shared_ptr<Handler> next) {
-    if (mNext != nullptr) {
-        mNext->add(next);
-    } else {
-        mNext = next;
-    }
-}
-
-void Handler::handle(const std::string &cmd) {
-    mNext->handle(cmd);
-}
-
-void Handler::startOfBlock() {
-    if (mBulk != nullptr) {
-        mBulk->startOfBlock();
-    }
-}
-
-void Handler::endOfBlock() {
-    if (mBulk != nullptr) {
-        mBulk->endOfBlock();
-    }
-}
-
-void Handler::addCommand(const std::string &cmd) {
-    if (mBulk != nullptr) {
-        mBulk->addCommand(cmd);
-    }
+void Handler::handle(std::function<void(std::string)> callback) {
+    callback(execute());
 }
